@@ -1,0 +1,59 @@
+\section{Circle}
+\begin{tikzpicture}
+    [scale=2.5,
+    % Styles
+    axes/.style=,
+    important line/.style={very thick},
+    information text/.style={rounded corners,fill=red!10,inner sep=1ex}]
+    
+    % Colors
+    \colorlet{anglecolor}{green!50!black}
+    \colorlet{sincolor}{red}
+    \colorlet{coscolor}{blue}
+    \colorlet{tancolor}{orange!80!black}
+    
+    % Clip to isolate a part of the figure
+    %\clip (-1,-1) rectangle (3,3);
+    
+    % Grid
+    \draw [step=5mm, help lines, gray] (-1.4,-1.4) grid (1.4,1.4);
+    
+    % Circle
+    \draw (0,0) circle [radius=1];
+    
+    % Draw coordinate system
+    \draw[->] (-1.5,0) -- (1.5,0) node [anchor=north west] {$x$};
+    \draw[->] (0,-1.5) -- (0,1.5) node [anchor=south west] {$y$};
+    % Ticks and Labels
+    \foreach \x/\xtext in {-1, -.5/-\frac{1}{2}, 1}
+    \draw (\x,-1pt) -- (\x,1pt) node [below=2mm, fill=white] {$\xtext$};
+    \foreach \y/\ytext in {-1, -.5/-\frac{1}{2}, .5/\frac{1}{2}, 1}
+    \draw (-1pt,\y) -- (1pt,\y) node [left=2mm, fill=white] {$\ytext$};
+    
+    % Arc
+    \filldraw[fill=green!20!white, draw=green!50!black] (0,0) -- (3mm,0) 
+    arc [start angle = 0, end angle = 30, radius = 3mm] -- cycle;
+    \draw (15:2mm) node[anglecolor] {$\alpha$};
+    
+    % Sin
+    \draw[sincolor,thick]    (30:1) -- node[left,fill=white] {$\sin\alpha$} (30:1 |- 0,0);
+    % Cos
+    \draw[coscolor,thick]   (30:1) ++(0,-.5) -- node[below=2mm,fill=white] {$\cos\alpha$} (0,0);
+    % Tan
+    \path[name path=upward] (1,0) -- (1,1);
+    \path[name path=sloped] (0,0) -- (30:1.5); 
+    \draw[name intersections={of=upward and sloped, by = x}]
+    [very thick, tancolor] (1,0) -- node[right] {$\tan\alpha\color{black}=\frac{{\color{sincolor}\sin\alpha}}{{\color{coscolor}\cos\alpha}}$} (x);
+    \draw (0,0) -- (x);
+    
+    % Text Box
+    \draw[xshift=1.9cm]
+    node[right,text width = 5.5cm,information text] {
+      The {\color{anglecolor} angle $\alpha$} is $30^\circ$ in the example ($\pi/6$ in radians). The {\color{sincolor}sine of $\alpha$}, which is the height of the red line, is
+      \[{\color{sincolor} \sin \alpha} = 1/2.\] 
+      By the Theorem of Pythagoras we have ${\color{coscolor}\cos^2\alpha}+{\color{sincolor}\sin^2\alpha}=1$. Thus the length of the blue line, which is the \textcolor{coscolor}{cosine of $\alpha$}, must be
+      \[{\color{coscolor} \cos \alpha} = \sqrt{1-1/4}=\frac{1}{2}\sqrt{3}.\]
+      This shows that ${\color{tancolor} \tan\alpha}$, which is the height of the orange line, is
+      \[{\color{tancolor}\tan\alpha}=\frac{{\color{sincolor}\sin\alpha}}{{\color{coscolor}\cos\alpha}}=1/\sqrt{3}.\] 
+      };
+\end{tikzpicture}
