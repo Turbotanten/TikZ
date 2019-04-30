@@ -1,0 +1,23 @@
+\section{Bloch Sphere}
+
+\begin{tikzpicture}
+    [scale=3]
+    
+    % Circle
+    \draw (0,0) circle [radius = 1cm];
+    
+    % Ellipse
+    \draw[dashed] (0,0) ellipse [x radius = 1cm, y radius = .3 cm];
+    
+    % Draw Coordinate System
+    \draw[->] (0,0) -- (225:.5) node[below left] {$x$};
+    \draw[->] (0,0) -- (1,0) node[right] {$y$};
+    \draw[->] (0,0) -- (0,1) node[above] {$z$};
+    
+    % Computational basis states
+    \draw (0,-1) \node[below] {$|0\rangle$};
+    \draw (0,1) \node[above] {$|1\rangle$};
+    
+    % Draw Bloch vector
+    
+\end{tikzpicture}
