@@ -1,0 +1,13 @@
+\section{Angle}
+
+\begin{tikzpicture}[scale=3]
+    \coordinate (A) at (30:1);
+    \coordinate (B) at (0,0);
+    \coordinate (C) at (1,0);
+    
+    \draw (A) -- (B) -- (C)
+        pic [draw=green!50!black,fill=green!20,angle radius=9mm,angle eccentricity=1.2, "$\alpha$"] {angle = C--B--A};
+        
+    \draw (3,0) -- (2,0) -- +(30:1)
+        pic [draw=green!50!black,fill=green!20,angle radius=9mm,angle eccentricity=1.2, "$\alpha$"] {};
+\end{tikzpicture}

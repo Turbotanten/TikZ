@@ -1,17 +1,21 @@
 \documentclass[draft]{article}
 \usepackage[a4paper]{geometry} %use this if you want wider text
 \usepackage[utf8]{inputenc}
+
+\input{newcommands}
 \usepackage{tikz}
 \usetikzlibrary{intersections}
+\usetikzlibrary{quotes,angles,positioning}
+\usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
 
 \title{TikZ}
 \author{Pontus Vikstål}
 \date{April 2019}
 
+
 \begin{document}
 
 \maketitle
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                           %
 %           CIRCLE          %
@@ -21,10 +25,34 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                           %
+%          PETRI-NET        %
+%                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\input{petri-net}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           %
+%           ANGLE           %
+%                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\input{angle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           %
 %       BLOCH SPHERE        %
 %                           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \input{blochsphere}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           %
+%            JJ             %
+%                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\input{josephsonjunction}
 
 \end{document}
