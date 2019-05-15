@@ -1,23 +1,37 @@
 \section{Bloch Sphere}
 
 \begin{tikzpicture}
-    [scale=3]
+    [scale=3,
+    >=stealth]
+
+    % Origo
+    \coordinate (O) at (0,0);
     
     % Circle
-    \draw (0,0) circle [radius = 1cm];
+    \draw[thick] (0,0) circle [radius = .9cm];
     
     % Ellipse
-    \draw[dashed] (0,0) ellipse [x radius = 1cm, y radius = .3 cm];
+    \draw[thick,dashed] (0,0) circle [x radius = .9cm, y radius = .25 cm];
     
-    % Draw Coordinate System
-    \draw[->] (0,0) -- (225:.5) node[below left] {$x$};
-    \draw[->] (0,0) -- (1,0) node[right] {$y$};
-    \draw[->] (0,0) -- (0,1) node[above] {$z$};
+    % Draw 3D Coordinate System
+    \draw[->,thick] (0,0) -- (1,0,0) coordinate (Y) node[right]       {$\hat{\mathbf{y}}$};
+    \draw[->,thick] (0,0) -- (0,1,0) coordinate (Z) node[above]       {$\hat{\mathbf{z}}$};
+    \draw[->,thick] (0,0) -- (0,0,1) coordinate (X) node[below left]  {$\hat{\mathbf{x}}$};
     
-    % Computational basis states
-    \draw (0,-1) \node[below] {$|0\rangle$};
-    \draw (0,1) \node[above] {$|1\rangle$};
+    % Computational Basis States
+    \filldraw[fill=white,draw=black] (0,.9) circle [radius = 1pt]
+            node [above right] {$|0\rangle$};
+    \filldraw[fill=white,draw=black] (0,-.9) circle [radius = 1pt]
+            node [below right] {$|1\rangle$};
     
-    % Draw Bloch vector
+    % Bloch Vector
+    \draw[] (0,0) -- (0.6,1,0.8) coordinate (A) node[above right,fill=white] {$|\psi\rangle$};
+    \filldraw[fill=black] (0.6,1,0.8) circle [radius = .6pt];
+    \draw[densely dashed,thin] (0.6,1,0.8) -- ++(0,-.85,0) coordinate (B) -- (0,0);
     
+    % Angles
+    \path (A) -- (O) -- (Z)
+        pic[draw=black,angle eccentricity=1.2,angle radius=1cm,"$\theta$"] {angle=A--O--Z};
+    \path (B) -- (O) -- (X)
+        pic[draw=black,angle eccentricity=1.7,angle radius=.3cm,"$\phi$"] {angle=X--O--B};
 \end{tikzpicture}

@@ -1,0 +1,30 @@
+\section{Tutorial: A Petri-Net for Hagen}
+
+\begin{tikzpicture}
+    [scale=3,
+    bend angle=45,
+    place/.style={circle,draw=blue!50,fill=blue!20,thick,
+                  inner sep=0pt,minimum size=6mm},
+    transition/.style={rectangle,draw=black!50,fill=black!20,thick,
+                       inner sep=0pt,minimum size=4mm},
+    pre/.style={<-,shorten <=1pt,>=stealth,semithick},
+    post/.style={->,shorten >=1pt,>=stealth,semithick}]
+                       
+    \node[place] (waiting)  {};
+    \node[place] (critical) [below=of waiting] {};
+    \node[place] (semaphore)[below=of critical,
+                             label=above:$s\leq3$] {};
+                             
+    \node[transition] (leave critical) [right=of critical] {}
+        edge[pre]               (critical)
+        edge[pre,bend left]     (semaphore)
+        edge[post,bend right] node[auto,swap] {2}  (waiting);
+    \node[transition] (enter critical) [left=of critical] {}
+        edge[pre,bend left]     (waiting)
+        edge[post]              (critical)
+        edge[post,bend right]   (semaphore);
+    
+    \begin{scope}[on background layer]
+        \node [fill=black!30,fit=(waiting) (semaphore) (leave critical) (enter critical)] {};
+    \end{scope}
+\end{tikzpicture}
