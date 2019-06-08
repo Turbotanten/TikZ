@@ -3,10 +3,14 @@
 \usepackage[utf8]{inputenc}
 
 \input{newcommands}
+\usepackage{braket}
 \usepackage{tikz}
 \usetikzlibrary{intersections}
 \usetikzlibrary{quotes,angles,positioning}
 \usetikzlibrary{arrows,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usetikzlibrary{quantikz}
+\usetikzlibrary{backgrounds,decorations.pathreplacing,calc}
+
 
 \title{TikZ}
 \author{Pontus Vikstål}
@@ -54,5 +58,136 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \input{josephsonjunction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                           %
+%           QAOA            %
+%                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\input{qaoa}
+\section{QAOA}
+
+\begin{tikzpicture}[
+    node distance=5mm,
+    qubit/.style={},
+    gate/.style={rectangle,draw=black}
+  ]
+  \draw[help lines] (0,-5) grid (5,1);
+
+  % Column 0
+  \node[qubit] (q1) {$|0\rangle$};
+  \node[qubit] (q2) [below=2mm of q1]{$|0\rangle$};
+  \node[qubit] (qN) [below=of q2]{$|0\rangle$};
+
+  % Column 1
+  \node[gate] (H1) [right=of q1] {$H$} edge [-] (q1);
+  \node[gate] (H2) [right=of q2] {$H$} edge [-] (q2);
+  \node[gate] (HN) [right=of qN] {$H$} edge [-] (qN);
+
+  % Column 3
+  \node[rectangle,draw=black,minimum height=2.35cm] (C) [below right = -5 mm and 5 mm of H1]
+  {$e^{-i\gamma\hat{C}}$} edge [-] (H1) edge [-] (H2) edge [-] (HN);
+
+  \path (q2) -- (qN) node [midway,sloped] {$\dots$};
+  \path (H2) -- (HN) node [midway,sloped] {$\dots$};
+\end{tikzpicture}
+
+\clearpage
+
+\begin{tikzpicture}[thick]
+% `operator' will only be used by Hadamard (H) gates here.
+% `operator2' is for large U gates
+% `phase' is used for controlled phase gates (dots).
+% `surround' is used for the background box.
+% `crossx' is used for the cross.
+% `circlewc' is used for the circle with cross box.
+\tikzset{
+surround/.style = {fill=blue!10,thick,draw=black,rounded corners=2mm},
+cross/.style={path picture={
+\draw[thick,black](path picture bounding box.north) -- (path picture bounding box.south) (path picture bounding box.west) -- (path picture bounding box.east);
+}},
+crossx/.style={path picture={
+\draw[thick,black,inner sep=0pt]
+(path picture bounding box.south east) -- (path picture bounding box.north west) (path picture bounding box.south west) -- (path picture bounding box.north east);
+}},
+circlewc/.style={draw,circle,cross,minimum width=0.3 cm},
+}
+
+\tikzstyle{gate} = [draw,fill=white,minimum size=6mm]
+\tikzstyle{operator2} = [draw,fill=white,minimum height=32mm,thick,yshift=-4mm]
+\tikzstyle{phase} = [draw,fill,shape=circle,minimum size=5pt,inner sep=0pt]
+%
+\matrix[row sep=2mm, column sep=10mm] (circuit) {
+
+% 9 columns
+% First row.
+\node (q1) {$\ket{0}$};
+& [-5mm] \node[gate] (H11) {$H$};
+&
+&\node[gate] (H12) {$R_x(\beta)$};
+& [-.5cm]
+\coordinate (end1); \\
+
+% Second row.
+\node (q2) {$\ket{0}$};
+&\node[gate] (H21) {$H$};
+&\node[](U21){};
+&\node[gate] (H22) {$R_x(\beta)$};
+&\coordinate (end2); \\
+
+% Third riow
+\node[rotate=90] {$\dots$};
+&\node[rotate=90] {$\dots$};
+&\node[](U31){};
+& \ldots[] {h};
+& \\
+
+% Fourth row.
+\node (q3) {$\ket{0}$};
+&\node[gate] (H31) {$H$};
+&
+&\node[gate] (H32) {$R_x(\beta)$};
+&\coordinate (end3); \\
+};
+
+% Draw bracket on right with resultant state.
+\draw[decorate,decoration={brace},thick]
+    ($(end1)+(2pt,0)$)
+    to node[midway,right] (bracket) {$\ket{\phi^+}$}
+    ($(end2)+(2pt,0)$);
+\node at ($(end3)+(5pt,0)$){$\ket{\psi}$};
+
+\begin{pgfonlayer}{background}
+\draw[thick]
+(q1) -- (end1)
+(q2) -- (end2)
+(q3) -- (end3);
+\foreach \i in {-3,-0.4,4}{
+  \node[operator2] at (U21) {$e^{-i\gamma\hat{C}}$};  %<-- for large U
+}
+\end{pgfonlayer}
+\end{tikzpicture}
+
+\tikzset{
+operator/.append style={fill=red!20},
+my label/.append style={above right,xshift=0.3cm},
+phase label/.append style={label position=above},
+cdots/.style={rotate=45,sloped}
+}
+\begin{tikzcd}[]
+& \gate{H} & \qw & \gate[wires=3]{U}  & \qw \\
+& \cdots   &     &                    &     \\
+& \gate{H} & \qw &                    & \qw
+\end{tikzcd}
+
+
+\begin{tikzcd}
+& \gate[5,cwires={2,4},nwires={3}]{U} & \qw \\
+& & \cw \\
+& & \qw \\
+& & \cw \\
+& & \qw
+\end{tikzcd}
 
 \end{document}
